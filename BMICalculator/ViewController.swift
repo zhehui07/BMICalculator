@@ -34,19 +34,32 @@ class ViewController: UIViewController {
         let heightUnit = segHeight.selectedSegmentIndex
         print(weightUnit)
         guard let weight = Float(txtWeight.text!) else{return}
-        var weightKG = weight
-        if weightUnit == 1 {
-            weightKG = weight * 0.45
+        var weightValue = weight
+        if weightUnit == 0 {
+            weightValue = weight * 2.205
         }
         guard let bigUnit = Float(txtBigHeight.text!) else{return}
         guard let smallUnit = Float(txtSmallHeight.text!) else{return}
-        var height = bigUnit + smallUnit * 0.01
-        if heightUnit == 1 {
-            height = (bigUnit * 12 + smallUnit) * 0.025
+        var height = bigUnit * 12 + smallUnit
+        if heightUnit == 0 {
+            height = (bigUnit + smallUnit * 0.01) * 39.37
         }
     
-        let BMI = weightKG/height/height
-        lblBMI.text = "Your BMI is \(BMI)"
+        let BMI = (weightValue/height/height) * 703
+        var message = ""
+        if(BMI < 18.5){
+            message = "and you are underweight"
+        }
+        if(BMI >= 18.5 && BMI <= 24.9){
+            message = "and you are in healthy weight"
+        }
+        if(BMI >= 25 && BMI <= 29.9){
+            message = "and You are overweight"
+        }
+        if(BMI >= 30){
+            message = "and you are obese"
+        }
+        lblBMI.text = "Your BMI is \(roundf(BMI)), \(message)"
         
     }
     //        guard let weight = Float(txtWeight.text!) else{return}
